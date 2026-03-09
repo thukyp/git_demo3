@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<head>
+    <title>Edit Product</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+
+    <h2>Edit Product</h2>
+
+    <form th:action="@{/products/edit}"
+          th:object="${product}"
+          method="post"
+          enctype="multipart/form-data">
+
+        <input type="hidden" th:field="*{id}">
+
+        <!-- NAME -->
+        <div class="mb-3">
+            <label>Name</label>
+            <input class="form-control" th:field="*{name}">
+            <div class="text-danger" th:errors="*{name}"></div>
+        </div>
+
+        <!-- BUY PRICE -->
+        <div class="mb-3">
+            <label>Buy Price</label>
+            <input type="number" class="form-control" th:field="*{buyPrice}">
+            <div class="text-danger" th:errors="*{buyPrice}"></div>
+        </div>
+
+        <!-- SELL PRICE -->
+        <div class="mb-3">
+            <label>Sell Price</label>
+            <input type="number" class="form-control" th:field="*{sellPrice}">
+            <div class="text-danger" th:errors="*{sellPrice}"></div>
+        </div>
+
+        <!-- OBJECT LEVEL ERROR -->
+        <div class="text-danger mb-2" th:errors="*{*}"></div>
+
+        <!-- CATEGORY -->
+        <div class="mb-3">
+            <label>Category</label>
+            <select class="form-select" name="categoryId">
+                <option value="">-- Select Category --</option>
+                <option th:each="c : ${categories}"
+                        th:value="${c.id}"
+                        th:text="${c.name}"
+                        th:selected="${product.category != null && product.category.id == c.id}">
+                </option>
+            </select>
+        </div>
+
+        <!-- CURRENT IMAGE -->
+        <div class="mb-3">
+            <img th:if="${product.image != null}"
+                 th:src="@{/images/{img}(img=${product.image})}"
+                 width="120">
+        </div>
+
+        <!-- CHANGE IMAGE -->
+        <div class="mb-3">
+            <label>Change Image</label>
+            <input type="file" class="form-control" name="imageProduct">
+        </div>
+
+        <button class="btn btn-success">Update</button>
+        <a th:href="@{/products}" class="btn btn-secondary">Back</a>
+
+    </form>
+
+</div>
+</body>
+</html>

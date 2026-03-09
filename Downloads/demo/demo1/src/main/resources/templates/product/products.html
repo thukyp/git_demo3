@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+
+
+<head>
+  <title>Product List</title>
+</head>
+  <body>
+  <div layout:fragment="content">
+
+
+  <h2>Product List</h2>
+
+  <!-- SEARCH -->
+      <form th:action="@{/products/search}" method="get">
+        <input type="text" name="keyword" th:value="${keyword}">
+      </form>
+
+  <a th:href="@{/products/create}">Add Product</a>
+
+  <table class="table table-bordered mt-3">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Buy</th>
+      <th>Sell</th>
+      <th>Category</th>
+      <th>Image</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="p : ${listproduct}">
+      <td th:text="${p.id}"></td>
+      <td th:text="${p.name}"></td>
+      <td th:text="${p.buyPrice}"></td>
+      <td th:text="${p.sellPrice}"></td>
+      <td th:text="${p.category.name}"></td>
+      <td>
+        <img th:if="${p.image != null}"
+             th:src="@{/images/{img}(img=${p.image})}"
+             width="80">
+      </td>
+      <td>
+        <a th:href="@{/products/edit/{id}(id=${p.id})}">Edit</a>
+        |
+        <a th:href="@{/products/delete/{id}(id=${p.id})}">Delete</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+</div>
+</body>
+</html>
